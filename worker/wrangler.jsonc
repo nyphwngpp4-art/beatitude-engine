@@ -1,0 +1,16 @@
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "beatitude-engine",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-01",
+  // Bundle the canonical rubric file (the same one the Python core loads) as a
+  // text module — the Worker and the library share one scoring contract.
+  "rules": [{ "type": "Text", "globs": ["**/*.md"] }]
+  // Secrets (set once per environment, never committed):
+  //   wrangler secret put BEATITUDE_AUTH_TOKEN
+  //   wrangler secret put XAI_API_KEY
+  //   wrangler secret put ANTHROPIC_API_KEY
+  //   wrangler secret put OPENAI_API_KEY
+  //   wrangler secret put SUPABASE_URL
+  //   wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+}

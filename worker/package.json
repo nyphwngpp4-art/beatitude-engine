@@ -1,0 +1,10 @@
+{
+  "name": "beatitude-engine-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/logic.test.mjs",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev"
+  }
+}

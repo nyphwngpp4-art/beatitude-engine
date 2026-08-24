@@ -1,0 +1,62 @@
+{
+  "comment": "Cross-language contract fixtures. The Python core (tests/test_verdict.py) and the Cloudflare Worker port (worker/test/logic.test.mjs) both run these, so verdict derivation and council aggregation can never drift between the two implementations.",
+  "keys": [
+    "honest_scoping",
+    "human_impact_honesty",
+    "no_hype",
+    "build_integrity",
+    "dignified_rejection",
+    "transparency",
+    "no_manipulation",
+    "standard_over_profit"
+  ],
+  "derive_cases": [
+    {
+      "name": "all twos -> Aligned",
+      "scores": {"honest_scoping": 2, "human_impact_honesty": 2, "no_hype": 2, "build_integrity": 2, "dignified_rejection": 2, "transparency": 2, "no_manipulation": 2, "standard_over_profit": 2},
+      "expected": "Aligned"
+    },
+    {
+      "name": "single one -> Closely Aligned",
+      "scores": {"honest_scoping": 2, "human_impact_honesty": 2, "no_hype": 1, "build_integrity": 2, "dignified_rejection": 2, "transparency": 2, "no_manipulation": 2, "standard_over_profit": 2},
+      "expected": "Closely Aligned"
+    },
+    {
+      "name": "many ones -> Closely Aligned",
+      "scores": {"honest_scoping": 1, "human_impact_honesty": 1, "no_hype": 1, "build_integrity": 1, "dignified_rejection": 1, "transparency": 1, "no_manipulation": 1, "standard_over_profit": 1},
+      "expected": "Closely Aligned"
+    },
+    {
+      "name": "single zero -> Misaligned",
+      "scores": {"honest_scoping": 2, "human_impact_honesty": 2, "no_hype": 2, "build_integrity": 2, "dignified_rejection": 2, "transparency": 0, "no_manipulation": 2, "standard_over_profit": 2},
+      "expected": "Misaligned"
+    },
+    {
+      "name": "zero outranks ones -> Misaligned",
+      "scores": {"honest_scoping": 1, "human_impact_honesty": 2, "no_hype": 1, "build_integrity": 2, "dignified_rejection": 2, "transparency": 2, "no_manipulation": 0, "standard_over_profit": 1},
+      "expected": "Misaligned"
+    }
+  ],
+  "aggregate_cases": [
+    {
+      "name": "minimum per commitment across three members",
+      "inputs": [
+        {"honest_scoping": 2, "human_impact_honesty": 2, "no_hype": 1, "build_integrity": 2, "dignified_rejection": 2, "transparency": 2, "no_manipulation": 2, "standard_over_profit": 2},
+        {"honest_scoping": 2, "human_impact_honesty": 1, "no_hype": 2, "build_integrity": 2, "dignified_rejection": 2, "transparency": 2, "no_manipulation": 0, "standard_over_profit": 2},
+        {"honest_scoping": 1, "human_impact_honesty": 2, "no_hype": 2, "build_integrity": 2, "dignified_rejection": 2, "transparency": 2, "no_manipulation": 2, "standard_over_profit": 2}
+      ],
+      "expected": {"honest_scoping": 1, "human_impact_honesty": 1, "no_hype": 1, "build_integrity": 2, "dignified_rejection": 2, "transparency": 2, "no_manipulation": 0, "standard_over_profit": 2},
+      "expected_verdict": "Misaligned"
+    },
+    {
+      "name": "unanimous twos stay twos",
+      "inputs": [
+        {"honest_scoping": 2, "human_impact_honesty": 2, "no_hype": 2, "build_integrity": 2, "dignified_rejection": 2, "transparency": 2, "no_manipulation": 2, "standard_over_profit": 2},
+        {"honest_scoping": 2, "human_impact_honesty": 2, "no_hype": 2, "build_integrity": 2, "dignified_rejection": 2, "transparency": 2, "no_manipulation": 2, "standard_over_profit": 2},
+        {"honest_scoping": 2, "human_impact_honesty": 2, "no_hype": 2, "build_integrity": 2, "dignified_rejection": 2, "transparency": 2, "no_manipulation": 2, "standard_over_profit": 2}
+      ],
+      "expected": {"honest_scoping": 2, "human_impact_honesty": 2, "no_hype": 2, "build_integrity": 2, "dignified_rejection": 2, "transparency": 2, "no_manipulation": 2, "standard_over_profit": 2},
+      "expected_verdict": "Aligned"
+    }
+  ]
+}
