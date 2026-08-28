@@ -3,6 +3,8 @@ name = "beatitude-engine"
 version = "0.1.0"
 description = "Beatitude Engine — values-review service for Agavi AI"
 requires-python = ">=3.11"
+# Lower bounds, not a lockfile. Pinning exact SDK versions is not required
+# for the scoring contract (rubric loaded verbatim; verdicts derived in-repo).
 dependencies = [
     "anthropic>=0.69",
     "openai>=1.55",

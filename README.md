@@ -20,10 +20,11 @@ per commitment**; council scores replace the single reviewer's and both appear
 in `models_used`. Aligned and Misaligned never escalate.
 
 **Policy:** the engine never blocks a pipeline and never auto-issues the seal.
-Every verdict is written to Supabase **before** `review()` returns. The seal
-exists only via `issue_seal()`, which refuses unless a human `approve` row
-exists in `signoffs` for that verdict — no verdict, no seal; no sign-off, no
-seal (enforced in code and by FK/UNIQUE constraints).
+Every verdict is written to Supabase **before** `review()` returns when persist
+is on (`BEATITUDE_PERSIST` defaults to on; `off` is the explicit local/eval
+skip). The seal exists only via `issue_seal()`, which refuses unless a human
+`approve` row exists in `signoffs` for that verdict — no verdict, no seal; no
+sign-off, no seal (enforced in code and by FK/UNIQUE constraints).
 
 ## Layout
 
@@ -112,7 +113,11 @@ only the service-role key can read or write them.
 ```bash
 .venv/bin/python -m pytest tests/ -q       # 23 tests, incl. issue_seal refusal + council min
 cd worker && npm test                      # 7 cross-language contract tests
+cd eval && python3 harness.py --mock       # harness pipeline only; mock accuracy is not engine quality
 ```
+
+GitHub Actions (`.github/workflows/offline-gates.yml`) runs those three commands
+on every pull request. No API keys required.
 
 ## Design decisions worth knowing
 
@@ -122,6 +127,7 @@ cd worker && npm test                      # 7 cross-language contract tests
 - **Commitment keys are parsed from the rubric headings** (`### N. key — ...`),
   so a rubric revision propagates to prompts, schemas, and validation without
   code changes. Rubric edits must re-pass the harness baseline.
-- **Dependencies** (all pinned in `pyproject.toml`): `anthropic`, `openai`
-  (also used for xAI's OpenAI-compatible API), `httpx` (Supabase PostgREST),
-  `mcp` (MCP server), `pytest` (dev). The Worker has zero runtime dependencies.
+- **Dependencies** (minimum versions in `pyproject.toml`, not a lockfile):
+  `anthropic`, `openai` (also used for xAI's OpenAI-compatible API), `httpx`
+  (Supabase PostgREST), `mcp` (MCP server), `pytest` (dev). The Worker has
+  zero runtime dependencies.
